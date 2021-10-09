@@ -1,13 +1,23 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router'
 import { Link } from 'react-router-dom'
+import { login } from '../../../redux/actions/userActions'
+
 import styles from './LogInForm.module.css'
+
 const LogInForm = () => {
 
     const [email,setEmail] = useState('')
     const [password,setPassword] = useState('')
 
+    const dispatch = useDispatch()
+    const history = useHistory()
+
     const handelSubmit = (e) =>{
         e.preventDefault();
+        dispatch(login(email, password))
+        history.push('/')
         console.log(email);
         console.log(password);
     }
