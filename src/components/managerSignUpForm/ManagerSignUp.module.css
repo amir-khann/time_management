@@ -59,3 +59,16 @@ transition: 0.3s ease-in-out;
 .sign_up{
 display: inline;
 }
+.check_box{
+  width: 88%;
+  height: 20px;
+  display: flex;
+  justify-content: flex-start;
+}
+input[type="checkbox"]{
+  width: 30px;
+}
+input[type="checkbox"]:focus{
+  box-shadow: none;
+  
+}

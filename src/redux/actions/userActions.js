@@ -63,22 +63,79 @@ export const login = (email, password) => async (dispatch) => {
   }
 }
 
+export const logout = () => (dispatch) => {
+  localStorage.removeItem('userInfo')
+  dispatch({ type: USER_LOGOUT })
+  document.location.href = '/signin'
+}
 
-export const register = (user) => async (dispatch) => {
+export const registerManager = (user) => async (dispatch) => {
+  try {
+    dispatch({
+      type: USER_REGISTER_REQUEST,
+    })
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+
+    const { data } = await axios.post(
+      'http://34.210.129.167/api/register',
+      { firstName:user.firstName,lastName:user.lastName, email:user.email, password:user.password, password_confirmation:user.password_confirmation },
+      config
+    )
+
+    dispatch({
+      type: USER_REGISTER_SUCCESS,
+      payload: data,
+    })
+
+    dispatch({
+      type: USER_LOGIN_SUCCESS,
+      payload: data,
+    })
+
+    localStorage.setItem('userInfo', JSON.stringify(data))
+  } catch (error) {
+    dispatch({
+      type: USER_REGISTER_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const registerUser = (user) => async (dispatch, getState) => {
     try {
       dispatch({
         type: USER_REGISTER_REQUEST,
       })
   
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
+
+      
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    console.log("userinfo.token",userInfo.token);
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }  
+
+
+     
   
       const { data } = await axios.post(
-        'http://34.210.129.167/api/register',
-        { firstName:user.firstName,lastName:user.lastName, email:user.email, password:user.password, password_confirmation:user.password_confirmation },
+        'http://34.210.129.167/api/users',
+        { firstName:user.firstName,lastName:user.lastName, email:user.email, password:user.password, password_confirmation:user.password_confirmation,userType:user.userType},
         config
       )
   
@@ -102,4 +159,5 @@ export const register = (user) => async (dispatch) => {
             : error.message,
       })
     }
+
   }
