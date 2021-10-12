@@ -10,6 +10,9 @@ import {
   USER_REGISTER_FAIL,
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
+  MANAGER_REGISTER_FAIL,
+  MANAGER_REGISTER_REQUEST,
+  MANAGER_REGISTER_SUCCESS,
   USER_UPDATE_PROFILE_FAIL,
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS,
@@ -51,6 +54,7 @@ export const login = (email, password) => async (dispatch) => {
       payload: data,
     })
 
+    console.log(data);
     localStorage.setItem('userInfo', JSON.stringify(data))
   } catch (error) {
     dispatch({
@@ -64,21 +68,91 @@ export const login = (email, password) => async (dispatch) => {
 }
 
 
-export const register = (user) => async (dispatch) => {
+
+
+export const logout = () => (dispatch) => {
+  localStorage.removeItem('userInfo')
+  dispatch({ type: USER_LOGOUT })
+  document.location.href = '/signin'
+}
+
+
+
+// MANAGER REGISTER ACTION
+
+export const registerManager = (user) => async (dispatch) => {
+  try {
+    dispatch({
+      type: MANAGER_REGISTER_REQUEST,
+    })
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+
+    const { data } = await axios.post(
+      'http://34.210.129.167/api/register',
+      { firstName:user.firstName,lastName:user.lastName, email:user.email, password:user.password, password_confirmation:user.password_confirmation },
+      config
+    )
+
+    dispatch({
+      type: MANAGER_REGISTER_SUCCESS,
+      payload: data,
+    })
+    dispatch({
+      type: USER_LOGIN_SUCCESS,
+      payload: data,
+    })
+
+ 
+
+    localStorage.setItem('userInfo', JSON.stringify(data))
+  } catch (error) {
+    dispatch({
+      type: MANAGER_REGISTER_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+
+
+
+
+
+export const registerUser = (user) => async (dispatch, getState) => {
     try {
       dispatch({
         type: USER_REGISTER_REQUEST,
       })
   
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
+
+      
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    console.log("userinfo.token",userInfo.token);
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }  
+
+
+     
   
       const { data } = await axios.post(
-        'http://34.210.129.167/api/register',
-        { firstName:user.firstName,lastName:user.lastName, email:user.email, password:user.password, password_confirmation:user.password_confirmation },
+        'http://34.210.129.167/api/users',
+        { firstName:user.firstName,lastName:user.lastName, email:user.email, password:user.password, password_confirmation:user.password_confirmation,userType:user.userType},
         config
       )
   
@@ -102,4 +176,43 @@ export const register = (user) => async (dispatch) => {
             : error.message,
       })
     }
+
   }
+
+  export const listUsers = () => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_LIST_REQUEST,
+    })
+
+    const {
+      userLogin: { userInfo },
+    } = getState()
+  console.log("token",userInfo.token);
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    const { data } = await axios.get(`http://34.210.129.167/api/users`, config)
+
+    dispatch({
+      type: USER_LIST_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message
+    if (message === 'Not authorized, token failed') {
+      dispatch(logout())
+    }
+    dispatch({
+      type: USER_LIST_FAIL,
+      payload: message,
+    })
+  }
+}

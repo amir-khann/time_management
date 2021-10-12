@@ -5,6 +5,10 @@
     position: relative;
   }
   
+  .logo{
+    color: white;
+    font-size: 32px;
+  }
   .nav > .nav_header {
     display: inline;
   }
