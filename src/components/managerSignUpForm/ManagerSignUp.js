@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 import { Link } from 'react-router-dom'
-import { registerManager, registerUser } from '../../redux/actions/userActions'
+import { registerManager} from '../../redux/actions/userActions'
 import styles from './ManagerSignUp.module.css'
 
 const ManagerSignUp = () => {

@@ -34,12 +34,9 @@ const NormalUser = () => {
 
     const submitHandler = (e) => {
     e.preventDefault()
-    
-    if (user.password !== user.password_confirmation) {
-      setMessage('Passwords do not match')
-    } else {
+
       dispatch(registerUser(user))
-    }
+    
   }
     return (
         
