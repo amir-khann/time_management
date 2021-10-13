@@ -40,6 +40,7 @@ const ManagerSignUp = () => {
   }
     return (
         
+          <>
             <div className={styles.form_wrapper}>
             <form onSubmit={submitHandler}>
           <h2 className={styles.title}>Sign Up</h2>
@@ -55,6 +56,7 @@ const ManagerSignUp = () => {
           </h5>
        </form>
         </div>
+          </>
 
     )
 }

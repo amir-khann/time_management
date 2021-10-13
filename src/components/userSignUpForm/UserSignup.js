@@ -5,9 +5,9 @@ import { Link } from 'react-router-dom'
 import {  useHistory} from 'react-router'
 import { registerUser } from '../../redux/actions/userActions'
 
-import styles from './NormalUser.module.css'
+import styles from './User.module.css'
 
-const NormalUser = () => {
+const UserSignup = () => {
     const [user, setUser] = useState({
         firstName:"",
         lastName:"",
@@ -42,7 +42,7 @@ const NormalUser = () => {
         
         <div className={styles.form_wrapper}>
         <form onSubmit={submitHandler}>
-      <h2 className={styles.title}>Sign Up</h2>
+      <h2 className={styles.title}>Creat User</h2>
       <input type="text"  placeholder="First_Name" name="firstName" value={user.firstName} onChange={handelChange}/>
       <input type="text" placeholder="Last_Name"  name="lastName" value={user.lastName} onChange={handelChange}/>
       <input type="email" placeholder="Email"  name="email" value={user.email} onChange={handelChange}/>
@@ -59,4 +59,4 @@ const NormalUser = () => {
     )
 }
 
-export default NormalUser
+export default UserSignup
