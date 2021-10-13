@@ -1,7 +1,9 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom';
+import Admin from '../components/admin';
 import Manager from '../components/manger';
+import UserDashboard from '../components/userDasboard/userDashboard';
 
 const Home = () => {
 
@@ -11,11 +13,9 @@ const Home = () => {
   
     return (
         <div>
-            {role && role==="admin"? <h1>admin dashboard</h1> : null}
-            {role && role==="manager"? <>
-             <Manager />
-            </> : null}
-            {role && role==="user"? <h1>user dashboard</h1> : null}
+            {role && role==="admin"? <Admin /> : null}
+            {role && role==="manager"? <Manager /> : null}
+            {role && role==="user"? <UserDashboard /> : null}
         </div>
     )
 }

@@ -29,7 +29,7 @@ const Navbar = () => {
   </div>
   
   <div className={styles.nav_links}>
-    {userInfo? <SignInLinks />:<SignedOutLinks />}
+    {userInfo? <SignInLinks userInfo={userInfo} />:<SignedOutLinks />}
     
    
   </div>

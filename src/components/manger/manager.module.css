@@ -29,6 +29,20 @@ table {
     letter-spacing: .1em;
     text-transform: uppercase;
   }
+
+  .btn{
+    padding: 15px;
+    margin: 10px;
+    min-width: 100px;
+    border: none;
+    border-radius: 30px;
+    background: #7f33ff;
+    color: white;
+    text-align: center;
+    box-sizing: border-box;
+    border: 3px solid transparent;
+    transition: 0.3s ease-in-out;
+  }
   
   @media screen and (max-width: 600px) {
     table {

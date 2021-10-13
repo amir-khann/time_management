@@ -53,8 +53,6 @@ export const login = (email, password) => async (dispatch) => {
       type: USER_LOGIN_SUCCESS,
       payload: data,
     })
-
-    console.log(data);
     localStorage.setItem('userInfo', JSON.stringify(data))
   } catch (error) {
     dispatch({
@@ -197,7 +195,7 @@ export const registerUser = (user) => async (dispatch, getState) => {
     }
 
     const { data } = await axios.get(`http://34.210.129.167/api/users`, config)
-
+ console.log("actiondat",data);
     dispatch({
       type: USER_LIST_SUCCESS,
       payload: data,
@@ -212,6 +210,79 @@ export const registerUser = (user) => async (dispatch, getState) => {
     }
     dispatch({
       type: USER_LIST_FAIL,
+      payload: message,
+    })
+  }
+}
+
+
+export const deleteUser = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_DELETE_REQUEST,
+    })
+
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    await axios.delete(`http://34.210.129.167/api/users/${id}`, config)
+
+    dispatch({ type: USER_DELETE_SUCCESS })
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message
+    if (message === 'Not authorized, token failed') {
+      dispatch(logout())
+    }
+    dispatch({
+      type: USER_DELETE_FAIL,
+      payload: message,
+    })
+  }
+}
+
+
+
+
+
+export const updateUser = (user) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_UPDATE_REQUEST,
+    })
+
+    const {
+      userLogin: { userInfo },
+    } = getState()
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+console.log("zakir user",user);
+    const { data } = await axios.put(`http://34.210.129.167/api/users/${user.id}`, user, config)
+
+    dispatch({ type: USER_UPDATE_SUCCESS,payload:user })
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message
+    if (message === 'Not authorized, token failed') {
+      dispatch(logout())
+    }
+    dispatch({
+      type: USER_UPDATE_FAIL,
       payload: message,
     })
   }

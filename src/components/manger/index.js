@@ -1,38 +1,44 @@
 import axios from 'axios'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { listUsers } from '../../redux/actions/userActions'
+// import { useHistory} from 'react-router'
+import { Link,useHistory } from 'react-router-dom'
+import { deleteUser, listUsers,updateUser } from '../../redux/actions/userActions'
 
 import styles from './manager.module.css'
 
 
 const Manager = () => {
     const dispatch = useDispatch()
+    const userList = useSelector((state) => state?.userList?.users?.users?.data)
+
   
 
-    const userList = useSelector((state) => state.userList)
-    const users = userList.users?userList.users.users:[];
-
-
-    const userLogin = useSelector((state) => state.userLogin)
-  const { userInfo } = userLogin
-
- 
+    const update = useSelector(state => state)
+    console.log("update",update.userUpdate);
+    const history= useHistory()
 
     useEffect(() => {
-      
           dispatch(listUsers())
-   
       }, [dispatch])
-    
+
+      const handelDelete = (id) => {
+         
+        if (window.confirm('Are you sure')) {
+            dispatch(deleteUser(id))
+          }
+        }
+       const handelUpdate = (user) => {
+         dispatch(updateUser(user))
+         history.push('/')
+       }
     return (
         <div>
-            <h1>manager dashboard</h1>
-            <Link to="createuser"><button>createuser</button></Link>
+           
+            <Link to="createuser"><button className={styles.btn}>createuser</button></Link>
           
             <table>
-  <caption>Statement Summary</caption>
+  <caption>Manager dashboard</caption>
   <thead>
     <tr>
       <th scope="col">ID</th>
@@ -43,15 +49,15 @@ const Manager = () => {
     </tr>
   </thead>
   <tbody>
-  {users.data?.map((user) => (
+  {userList?.map((user) => (
               <tr key={user.id}>
                 <td scope="row" data-label="userId">{user.id}</td>
                 <td data-label="firstName">{user.firstName} {user.lastName}</td>
                 <td data-label="email">{user.email}</td>
                 <td data-label="role">{user.roles[0].name}</td>
                 <td data-label="Actions">
-                    <button>Delete</button>
-                    <button>Update</button>
+                    <button  onClick={() => handelDelete(user.id)}>Delete</button>
+                  <Link to="/useredit"> <button onClick={()=>handelUpdate(user)}>Update</button></Link>
                 </td>
              </tr>
             ))}
