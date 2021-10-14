@@ -1,49 +1,48 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-
-import { createLog } from '../../redux/actions/workLogActions'
+import { listWorkLogs } from '../../redux/actions/workLogActions'
+import style from './Dashboard.module.css'
 
 const UserDashboard = () => {
+ const dispatch = useDispatch();
+ const logs = useSelector(state => state?.workLogList?.users?.workLogs?.data)
 
- const state = useSelector(state => state.workLog)
- console.log(state.workLog.log);
- 
-    const dispatch = useDispatch();
-
-    const [workLog, setWorkLog] = useState({
-        logDate:"",
-        hours:"",
-        description:""
-    })
-
-
+   const updateBlog = () =>{
+       console.log("clicked");
+   }
    
-
-    const submitHandler = (e) => {
-        e.preventDefault()
-        dispatch(createLog(workLog))
-        console.log(workLog);
-    }
-    const handelChange = (e) => {
-        const {name, value} = e.target;
-        setWorkLog({...workLog,[name]:value})
-    }
+    useEffect(() => {
+        dispatch(listWorkLogs())
+    }, [dispatch])
 
     return (
-        <div>
-            <button >create works log</button>
-
-            <form onSubmit={submitHandler}>
-          <h2 className="title">create log</h2>
-          <input type="date"  placeholder="logDate" name="logDate" value={workLog.logDate} onChange={handelChange}/>
-          <input type="text" placeholder="hours"  name="hours" value={workLog.hours} onChange={handelChange}/>
-          <input type="text" placeholder="description"  name="description" value={workLog.description} onChange={handelChange}/>
-          {/* dropdown */}
-          <button className="sign_in_btn">Create log</button>
-
-          
-          
-       </form>
+        <div>  
+            <table>
+              <caption>User dashboard</caption>
+              <caption>Created logs</caption>
+              <thead>
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">DATE</th>
+                  <th scope="col">HOURS</th>
+                  <th scope="col">Description</th>
+                  <th scope='col'>Actions</th>
+                </tr>
+              </thead>
+              <tbody>      
+                  {logs?.map((log) => (
+                    <tr key={log.id}  className={log.hours >=8? style.green : style.red}>
+                      <td scope="row" data-label="userId">{log.id}</td>
+                      <td data-label="firstName">{log.log_date}</td>
+                      <td data-label="email" >{log.hours}</td>
+                      <td data-label="role">{log.description}</td>
+                      <td data-label="Actions">
+                      <button onClick={updateBlog}>Update</button>
+                      </td>
+                    </tr>
+                  ))}
+             </tbody>
+          </table>
         </div>
     )
 }

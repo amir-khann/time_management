@@ -72,3 +72,9 @@ input[type="checkbox"]:focus{
   box-shadow: none;
   
 }
+
+@media screen and (max-width: 600px){
+  form{
+    width: 90%;
+  }
+}
