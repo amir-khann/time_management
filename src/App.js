@@ -12,6 +12,7 @@ import Navbar from './components/navBar/Navbar'
 import UserEdit from "./components/userEdit/UserEdit";
 import UserSignup from "./components/userSignUpForm/UserSignup";
 import './App.css';
+import WorkLogForm from "./components/workLogForm/WorkLogForm";
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
       <Route path='/signin'  component={LogInForm} />
       <Route path='/createuser'  component={UserSignup} />
       <Route path='/useredit'  component={UserEdit} />
+      <Route path='/createworklog' component={WorkLogForm} />
       <Route path='/' exact component={Home} />
 
       </Switch>

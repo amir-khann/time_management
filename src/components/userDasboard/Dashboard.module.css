@@ -1,0 +1,13 @@
+.green{
+
+    background-color: rgb(125, 199, 52) 
+  }
+  .green:hover{
+    background-color: rgb(106, 165, 47) 
+  }
+ .red{
+    background-color: rgba(185, 22, 22, 0.884);
+ }
+ .red:hover{
+    background-color: rgba(221, 36, 36, 0.884);
+ }

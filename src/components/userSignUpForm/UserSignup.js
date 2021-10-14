@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
-import {  useHistory} from 'react-router'
 import { registerUser } from '../../redux/actions/userActions'
 
 import styles from './User.module.css'
@@ -16,14 +15,13 @@ const UserSignup = () => {
         password_confirmation:"",
         userType:"user"
     })
-    
-    const [message, setMessage] = useState(null)
+
    
     const dispatch = useDispatch()
-    const history = useHistory()
+ 
     
     const userLogin = useSelector((state) => state.userLogin)
-    const { loading, error, userInfo } = userLogin
+    const {  userInfo } = userLogin
    console.log("userInfo",userInfo);
 
     const handelChange = (e) => {

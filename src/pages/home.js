@@ -1,6 +1,5 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom';
+import {  useSelector } from 'react-redux'
 import Admin from '../components/admin';
 import Manager from '../components/manger';
 import UserDashboard from '../components/userDasboard/userDashboard';

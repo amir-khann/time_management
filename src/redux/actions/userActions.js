@@ -1,8 +1,5 @@
 import axios from 'axios'
 import {
-  USER_DETAILS_FAIL,
-  USER_DETAILS_REQUEST,
-  USER_DETAILS_SUCCESS,
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
@@ -13,14 +10,9 @@ import {
   MANAGER_REGISTER_FAIL,
   MANAGER_REGISTER_REQUEST,
   MANAGER_REGISTER_SUCCESS,
-  USER_UPDATE_PROFILE_FAIL,
-  USER_UPDATE_PROFILE_REQUEST,
-  USER_UPDATE_PROFILE_SUCCESS,
-  USER_DETAILS_RESET,
   USER_LIST_FAIL,
   USER_LIST_SUCCESS,
   USER_LIST_REQUEST,
-  USER_LIST_RESET,
   USER_DELETE_REQUEST,
   USER_DELETE_SUCCESS,
   USER_DELETE_FAIL,
@@ -28,7 +20,6 @@ import {
   USER_UPDATE_SUCCESS,
   USER_UPDATE_REQUEST,
 } from '../constants/userConstants'
-
 
 
 export const login = (email, password) => async (dispatch) => {
@@ -66,15 +57,11 @@ export const login = (email, password) => async (dispatch) => {
 }
 
 
-
-
 export const logout = () => (dispatch) => {
   localStorage.removeItem('userInfo')
   dispatch({ type: USER_LOGOUT })
   document.location.href = '/signin'
 }
-
-
 
 // MANAGER REGISTER ACTION
 
@@ -105,8 +92,6 @@ export const registerManager = (user) => async (dispatch) => {
       payload: data,
     })
 
- 
-
     localStorage.setItem('userInfo', JSON.stringify(data))
   } catch (error) {
     dispatch({
@@ -120,18 +105,12 @@ export const registerManager = (user) => async (dispatch) => {
 }
 
 
-
-
-
-
 export const registerUser = (user) => async (dispatch, getState) => {
     try {
       dispatch({
         type: USER_REGISTER_REQUEST,
       })
-  
-
-      
+   
     const {
       userLogin: { userInfo },
     } = getState()
@@ -145,9 +124,6 @@ export const registerUser = (user) => async (dispatch, getState) => {
       },
     }  
 
-
-     
-  
       const { data } = await axios.post(
         'http://34.210.129.167/api/users',
         { firstName:user.firstName,lastName:user.lastName, email:user.email, password:user.password, password_confirmation:user.password_confirmation,userType:user.userType},
@@ -186,7 +162,7 @@ export const registerUser = (user) => async (dispatch, getState) => {
     const {
       userLogin: { userInfo },
     } = getState()
-  console.log("token",userInfo.token);
+ 
 
     const config = {
       headers: {
@@ -195,7 +171,6 @@ export const registerUser = (user) => async (dispatch, getState) => {
     }
 
     const { data } = await axios.get(`http://34.210.129.167/api/users`, config)
- console.log("actiondat",data);
     dispatch({
       type: USER_LIST_SUCCESS,
       payload: data,
@@ -251,9 +226,6 @@ export const deleteUser = (id) => async (dispatch, getState) => {
 }
 
 
-
-
-
 export const updateUser = (user) => async (dispatch, getState) => {
   try {
     dispatch({
@@ -269,10 +241,12 @@ export const updateUser = (user) => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     }
-console.log("zakir user",user);
+
+localStorage.setItem('updateUser', JSON.stringify(user))
+
     const { data } = await axios.put(`http://34.210.129.167/api/users/${user.id}`, user, config)
 
-    dispatch({ type: USER_UPDATE_SUCCESS,payload:user })
+    dispatch({ type: USER_UPDATE_SUCCESS,payload:data })
   } catch (error) {
     const message =
       error.response && error.response.data.message
