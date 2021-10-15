@@ -116,7 +116,7 @@ a{
 	-webkit-box-shadow: 0px 0px 5px 5px rgba(230, 218, 218, 0.62);
 	-moz-box-shadow: 0px 0px 5px 5px rgba(230, 218, 218, 0.62);
   }
-  .sign_in_btn{
+  .sign_in_btn,.workLogBtn{
   padding: 15px;
   margin: 10px 0px;
   width: 88%;
@@ -128,6 +128,9 @@ a{
   box-sizing: border-box;
   border: 3px solid transparent;
   transition: 0.3s ease-in-out;
+  }
+  .workLogBtn{
+    width: 200px;
   }
   .sign_up{
   display: inline;
