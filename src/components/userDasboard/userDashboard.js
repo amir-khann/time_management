@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { listWorkLogs } from '../../redux/actions/workLogActions'
 import style from './Dashboard.module.css'
 
@@ -17,6 +18,7 @@ const UserDashboard = () => {
 
     return (
         <div>  
+            <Link to="/createworklog"><button className="workLogBtn"> create Log</button></Link>
             <table>
               <caption>User dashboard</caption>
               <caption>Created logs</caption>
